@@ -5,39 +5,38 @@ pipeline {
   }
   agent any
   stages {
-    stage('Building image') {
-      steps{
-        script {
-          dockerImage = docker.build registry + ":$BUILD_NUMBER"
-        }
-      }
-    }
-
-    stage('Deploy Image') {
-      steps{
-        script {
-          docker.withRegistry( '', 'dockerhub' ) {
-            dockerImage.push()
-          }
-        }
-      }
-    }
-
-    stage('Remove Image') {
-      steps{
-        sh "docker rmi $registry:$BUILD_NUMBER"
-      }
-    }
-
-    stage('Execute Image') {
-      steps{
-            imageName = registry + ":$BUILD_NUMBER"
-            testbed = docker.image('${imageName}')
-            testbed.inside("-u root:root"){
-                echo 'Executing from Busybox.'
+        stage('Building image') {
+        steps{
+            script {
+            dockerImage = docker.build registry + ":$BUILD_NUMBER"
             }
-       }
-    }
-    
-}   
+        }
+        }
+
+        stage('Deploy Image') {
+        steps{
+            script {
+            docker.withRegistry( '', 'dockerhub' ) {
+                dockerImage.push()
+            }
+            }
+        }
+        }
+
+        stage('Remove Image') {
+        steps{
+            sh "docker rmi $registry:$BUILD_NUMBER"
+        }
+        }
+
+        stage('Remove Image') {
+        steps{
+            imageName = registry + ":$BUILD_NUMBER"
+                testbed = docker.image('${imageName}')
+                testbed.inside("-u root:root"){
+                    echo 'Executing from Busybox.'
+                }
+        }
+        }    
+    }   
 }
