@@ -31,7 +31,10 @@ pipeline {
 
         stage('Execute Image') {
         steps{
-            imageName = "${registry}" + ":$BUILD_NUMBER"
+            
+            docker.image('aktechthoughts/simplilearn-devops-certification:${BUILD_NUMBER}').inside {
+                sh 'Hello'
+            }
         }
         }
          
