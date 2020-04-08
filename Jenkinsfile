@@ -8,7 +8,7 @@ pipeline {
     stage('Building image') {
       steps{
         script {
-          docker.build registry + ":$BUILD_NUMBER"
+         def dockerImage = docker.build registry + ":$BUILD_NUMBER"
         }
       }
     }
@@ -16,9 +16,7 @@ pipeline {
     stage('Deploy Image') {
       steps{
         script {
-          docker.withRegistry( 'https://hub.docker.com/v2/', 'dockerhub' ) {
-            dockerImage.push()
-          }
+            customImage.push()
         }
       }
     }
