@@ -33,9 +33,14 @@ pipeline {
 }
 
 node {
-    checkout scm
-    def customImage = docker.build("aktechthoughts/simplilearn-devops-certification:${env.BUILD_NUMBER}")
-    customImage.inside {
-        sh 'echo Hello'
+    stages{
+        stage('Execute Image'){
+            steps{
+                def customImage = docker.build("aktechthoughts/simplilearn-devops-certification:${env.BUILD_NUMBER}")
+                customImage.inside {
+                    sh 'echo Hello'
+                }
+            }
+        }
     }
 }
