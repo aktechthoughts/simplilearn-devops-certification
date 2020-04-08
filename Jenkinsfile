@@ -16,7 +16,7 @@ pipeline {
     stage('Deploy Image') {
       steps{
         script {
-            customImage.push()
+            dockerImage.push()
         }
       }
     }
