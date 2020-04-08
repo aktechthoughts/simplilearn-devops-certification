@@ -28,18 +28,14 @@ pipeline {
             sh "docker rmi $registry:$BUILD_NUMBER"
         }
         }
-
-        stage('Execute Image'){
-            steps{
-                node {
-                    def customImage = docker.build("aktechthoughts/simplilearn-devops-certification:${env.BUILD_NUMBER}")
-                    customImage.inside {
-                        sh 'echo Hello'
-                    }
-                }
-            }
-        }
    }   
-  
 }
 
+node {
+    stage('Execute Image'){
+        def customImage = docker.build("aktechthoughts/simplilearn-devops-certification:${env.BUILD_NUMBER}")
+        customImage.inside {
+            sh 'echo Hello'
+        }
+    }
+}
