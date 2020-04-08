@@ -31,7 +31,7 @@ pipeline {
 
         stage('Execute Image') {
         steps{
-            imageName = registry + ":$BUILD_NUMBER"
+            imageName = "$registry" + ":$BUILD_NUMBER"
         }
         }
          
