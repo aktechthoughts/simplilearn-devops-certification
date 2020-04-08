@@ -23,11 +23,20 @@ pipeline {
       }
     }
 
-    stage('Remove Unused docker image') {
+    stage('Remove Image') {
       steps{
         sh "docker rmi $registry:$BUILD_NUMBER"
       }
     }
- 
-  }
+
+    stage('Execute Image') {
+      steps{
+            imageName = registry + ":$BUILD_NUMBER"
+            testbed = docker.image('${imageName}')
+            testbed.inside("-u root:root"){
+                echo 'Executing from Busybox.'
+            }
+       }
+    }
+    
 }
